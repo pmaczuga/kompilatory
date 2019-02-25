@@ -3,4 +3,6 @@
 Homepage:  
 http://home.agh.edu.pl/~mkuta/tklab/
 
-<span style=font-family: "Courier New">abc</span>
+<pre>
+Some fixed width text <em>with formatting</em>
+</pre>
