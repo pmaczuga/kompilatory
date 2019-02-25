@@ -3,6 +3,4 @@
 Homepage:  
 http://home.agh.edu.pl/~mkuta/tklab/
 
-<pre>
-Some fixed width text <em>with formatting</em>
-</pre>
+<p><font face="verdana" color="green">This is some text!</font></p>
