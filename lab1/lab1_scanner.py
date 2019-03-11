@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-literals = "()[]{}:;,;'"
+literals = "()[]{}:;,;"
 
 t_ADD    = r'\+'
 t_SUB   = r'\-'
@@ -24,6 +24,8 @@ t_SUBASSIGN = r'\-\='
 t_MULASSIGN = r'\*\='
 t_DIVASSIGN = r'\/\='
 
+t_TRANSPOSE = r'\''
+
 reserved = {
     'if' : 'IF',
     'else' : 'ELSE',
@@ -39,9 +41,10 @@ reserved = {
 }
 
 tokens = [ 'COMMENT', 'INTNUM', 'FLOATNUM', 'STRING',
-'ID', 'EQ', 'GT', 'LT', 'GE', 'LE', 'NE', 'IS',
+'ID', 'EQ', 'GT', 'LT', 'GE', 'LE', 'NE',
 'ASSIGN', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN',
-'ADD', 'SUB', 'MUL', 'DIV', 'DOTADD', 'DOTSUB', 'DOTMUL', 'DOTDIV', 
+'ADD', 'SUB', 'MUL', 'DIV', 'DOTADD', 'DOTSUB', 'DOTMUL', 'DOTDIV',
+'TRANSPOSE', 
  ] + list(reserved.values())
 
 def t_COMMENT(t):
@@ -51,7 +54,7 @@ def t_COMMENT(t):
 
 def t_STRING(t):
     r'\".*?\"'
-    t.value = t.value[1:-1]
+    # t.value = t.value[1:-1]
     return t
 
 def t_FLOATNUM(t):
