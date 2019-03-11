@@ -24,8 +24,6 @@ t_SUBASSIGN = r'\-\='
 t_MULASSIGN = r'\*\='
 t_DIVASSIGN = r'\/\='
 
-t_STRING = r'\".*\"'
-
 reserved = {
     'if' : 'IF',
     'else' : 'ELSE',
@@ -50,6 +48,11 @@ def t_COMMENT(t):
      r'\#.*'
      pass
      # No return value. Token discarded
+
+def t_STRING(t):
+    r'\".*?\"'
+    t.value = t.value[1:-1]
+    return t
 
 def t_FLOATNUM(t):
     r'(([0-9]+\.[0-9]+|[0-9]+\.|\.[0-9]+)E[0-9]+)|([0-9]+\.[0-9]+|[0-9]+\.|\.[0-9]+)'

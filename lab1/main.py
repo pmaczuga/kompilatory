@@ -1,6 +1,7 @@
 import sys
 import ply.lex as lex
-import scanner  # scanner.py is a file you create, (it is not an external library)
+import lab1_scanner
+import lab2_parser
 
 
 if __name__ == '__main__':
@@ -13,7 +14,7 @@ if __name__ == '__main__':
         sys.exit(0)
 
     text = file.read()
-    lexer = scanner.lexer
+    lexer = lab1_scanner.lexer
     lexer.input(text) # Give the lexer some input
 
     # Tokenize
@@ -21,5 +22,6 @@ if __name__ == '__main__':
         tok = lexer.token()
         if not tok:
             break    # No more input
-        column = scanner.find_column(text,tok)
+        column = lab1_scanner.find_column(text,tok)
         print("(%d,%d): %s(%s)" %(tok.lineno, column, tok.type, tok.value))
+
