@@ -2,7 +2,7 @@
 
 Zadanie polega na stworzeniu analizatora leksykalnego (skanera) dla prostego języka umożliwiającego obliczenia na macierzach. Analizator leksykalny powinien rozpoznawać następujące leksemy:
 
-*   operatory binare: <texttt>+, -, *, /</texttt>
+*   operatory binare: +, -, *, /
 *   macierzowe operatory binarne (dla operacji element po elemencie): .+, .-, .*, ./
 *   operatory przypisania: =, +=, -=, *=, /=
 *   operatory relacyjne: <, >, <=, >=, !=, ==
@@ -32,20 +32,22 @@ Następujące znaki powinny być pomijane:
 *   komentarze: komentarze rozpoczynające się znakiem # do znaku końca linii
 
 Przykład.  
-Dla następującego [kodu](http://home.agh.edu.pl/~mkuta/tklab/lab1/example.txt):
+Dla następującego [kodu](example.txt):
 
-<pre class="code">A = zeros(5); # create 5x5 matrix filled with zeros
+```
+A = zeros(5); # create 5x5 matrix filled with zeros
 B = ones(7);  # create 7x7 matrix filled with ones
 I = eye(10);  # create 10x10 matrix filled with ones on diagonal and zeros elsewhere
 D1 = A.+B' ;  # add element-wise A with transpose of B
 D2 -= A.-B' ; # substract element-wise A with transpose of B
 D3 *= A.*B' ; # multiply element-wise A with transpose of B
 D4 /= A./B' ; # divide element-wise A with transpose of B
-</pre>
+```
 
 analizator leksykalny powinien zwracać następującą sekwencję i wypisywać ją na standardowym wyjściu:
 
-<pre class="code">(1,1): ID(A)
+```
+(1,1): ID(A)
 (1,3): =(=)
 (1,5): ZEROS(zeros)
 (1,10): ((()
@@ -94,9 +96,9 @@ analizator leksykalny powinien zwracać następującą sekwencję i wypisywać j
 (7,10): ID(B)
 (7,11): '(')
 (7,13): ;(;)
-</pre>
+```
 
-*   Do rozwiązania zadania należy użyć generatora skanerów, np. generatora `PLY`.
-*   Skaner powinien rozpoznawać niepoprawne leksykalnie wejście. W takim przypadku powinien zostać wypisany numer niepoprawnej linii wraz z szczegółową informacją o błędzie.
-*   Do stworzenia skanera można wykorzystać plik [main.py](http://home.agh.edu.pl/~mkuta/tklab/lab1/main.py) lub [main_oo.py](http://home.agh.edu.pl/~mkuta/tklab/lab1/main_oo.py) (należy stworzyć odpowiednio skaner "strukturalny" scanner.py lub obiektowy scanner_oo.py).
-*   Przykładowe wejście [example_full.txt](http://home.agh.edu.pl/~mkuta/tklab/lab1/example_full.txt)
+- Do rozwiązania zadania należy użyć generatora skanerów, np. generatora `PLY`.
+- Skaner powinien rozpoznawać niepoprawne leksykalnie wejście. W takim przypadku powinien zostać wypisany numer niepoprawnej linii wraz z szczegółową informacją o błędzie.
+- Do stworzenia skanera można wykorzystać plik [main.py](main.py) lub [main_oo.py](main_oo.py) (należy stworzyć odpowiednio skaner "strukturalny" scanner.py lub obiektowy scanner_oo.py).
+*   Przykładowe wejście [example_full.txt](example_full.txt)
