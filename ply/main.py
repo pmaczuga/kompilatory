@@ -1,6 +1,6 @@
 import sys
-import lab1_scanner
-import lab2_parser
+import zad1_scanner
+import zad2_parser
 
 if __name__ == '__main__':
 
@@ -11,6 +11,6 @@ if __name__ == '__main__':
         print("Cannot open {0} file".format(filename))
         sys.exit(0)
 
-    parser = lab2_parser.parser
+    parser = zad2_parser.parser
     text = file.read()
-    parser.parse(text, lexer=lab1_scanner.lexer)
+    parser.parse(text, lexer=zad1_scanner.lexer)

@@ -1,8 +1,8 @@
 import ply.yacc as yacc
 
-import lab1_scanner
+import zad1_scanner
 
-tokens = lab1_scanner.tokens
+tokens = zad1_scanner.tokens
 
 precedence = (
    ('nonassoc', 'ASSIGN', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN'),
@@ -181,10 +181,7 @@ def p_matrix_EYE(p):
         p[0] = ('EYE', p[3], p[5])
 
 def p_matrix_vectors(p):
-    '''matrix : '[' ']'
-              | '[' vector ']' 
-              | '[' vectors ']' '''
-    if 
+    '''matrix : '[' vectors ']' '''
     p[0] = ('MATRIX', p[2])
 
 def p_vectors_two(p):
@@ -195,33 +192,22 @@ def p_vectors_more(p):
     '''vectors : vectors ',' vector '''
     p[0] = p[1] + [p[3]]
 
-def p_vector(p):
-    '''vector : '[' ']'
-              | '[' element ']'
-              | '[' elements ']' '''
-    if len(p) == 4:
-        p[0] = p[1][1] + [p[3]]
-    elif len(p) == 2:
-        p[0] = ('VECTOR', [p[1]])
+def p_vecotor_one(p):
+  '''vector : '[' expression ']' '''
+  p[0] = ('VECTOR', [p[2]])
 
-def p_elements(p):
-    '''elements : elements ',' element
-                | element'''
-    if len(p) == 4:
-        p[0] = p[1] + [p[3]]
-    elif len(p) == 2:
-        p[0] = [p[1]]
+def p_vector_more(p):
+    '''vector : '[' expressions ']' '''
+    p[0] = ('VECTOR', p[2])
 
-def p_element(p):
-    '''element : expression'''
-    p[0] = p[1]
+def p_expressions_two(p):
+  '''expressions : expression ',' expression'''
+  p[0] = [p[1], p[3]]
 
-
-# to finish the grammar
-# ....
+def p_expressions_more(p):
+  '''expressions : expressions ',' expression'''
+  p[0] = p[1] + [p[3]]
 
 
     
-
-
 parser = yacc.yacc()

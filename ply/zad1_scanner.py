@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-literals = "()[]{}:;,;"
+literals = "()[]{}:;,"
 
 t_ADD    = r'\+'
 t_SUB   = r'\-'
