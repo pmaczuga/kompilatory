@@ -93,7 +93,7 @@ for token in lexer:
 
 Źródła: [simple_lex.py](simple_lex.py)
 
-##Stany leksera
+## Stany leksera
 
 Analogicznie do flexa, w analizatorze ply.lex można zadeklarować stany wyłączne (ang. _exclusive_) lub niewyłączne (ang. _inclusive_). Służy do tego zmienna `states`:
 ```
