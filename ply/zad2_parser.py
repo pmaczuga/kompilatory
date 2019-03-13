@@ -172,7 +172,7 @@ def p_matrix_zeros(p):
     elif len(p) == 7:
         p[0] = ('ZEROS', p[3], p[5])
 
-def p_matrix_EYE(p):
+def p_matrix_eye(p):
     '''matrix : EYE '(' expression ')'
               | EYE '(' expression ',' expression ')' '''
     if len(p) == 5:
@@ -180,7 +180,12 @@ def p_matrix_EYE(p):
     elif len(p) == 7:
         p[0] = ('EYE', p[3], p[5])
 
-def p_matrix_vectors(p):
+def p_matrix_vector_one(p):
+  '''matrix : '[' vector ']' '''
+  p[0] = ('MATRIX', [p[2]])
+
+
+def p_matrix_vectors_more(p):
     '''matrix : '[' vectors ']' '''
     p[0] = ('MATRIX', p[2])
 
