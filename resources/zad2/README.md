@@ -9,10 +9,10 @@ Zadanie polega na stworzeniu parsera, który powinien akceptować kod źródłow
 - inicjalizację macierzy konkretnymi wartościami,
 - macierzowe funkcje specjalne,
 - instrukcję przypisania, w tym różne operatory przypisania
-- instrukcję warunkową if-else,
-- pętle: while and for,
-- instrukcje break, continue oraz return,
-- instrukcję print,
+- instrukcję warunkową `if-else`,
+- pętle: while and `for`,
+- instrukcje `break`, `continue` oraz `return`,
+- instrukcję `print`,
 - instrukcje złożone,
 - tablice oraz ich zakresy.
 - Przykładowo, parser powinien akceptować następujący kod:
