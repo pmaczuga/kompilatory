@@ -41,14 +41,14 @@ FOR
 |  |  j
 ```
 
-Przykładowe pliki wejściowe: [example1.m], [example2.m], [example3.m]   
-oraz odpowiadające wyjściowe drzewa składni: [example1.tree], [example2.tree], [example3.tree]
+Przykładowe pliki wejściowe: [example1.m](example1.m), [example2.m](example2.m), [example3.m](example3.m)   
+oraz odpowiadające wyjściowe drzewa składni: [example1.tree](example1.tree), [example2.tree](example2.tree), [example3.tree](example3.tree)
 
 - Do rozwiązania zadania można użyć generatora parserów PLY.
 - Rozpoznawany język powinien być zgodny ze stworzoną gramatyką. Obecność białych znaków, sposób sformatowania tekstu nie ma wpływu na postać drzewa.
 - Drzewo abstrakcyjne składni (AST) powinno być wypisywane tylko dla syntaktycznie poprawnego wejścia.
 - Translator powinien wykrywać niepoprawne syntaktycznie wejście. W takim przypadku lepiej nie tworzyć drzewa syntaktycznego, ale dla niepoprawnych linii wypisywać numer linii wraz z informacją że wystąpił błąd.
-- Do stworzenia translatora, można użyć poprzednio stworzonych plików scanner.py, Mparser.py. Nowe pliki, które zostaną stworzone, to [AST.py], [TreePrinter.py] oraz [main.py].
+- Do stworzenia translatora, można użyć poprzednio stworzonych plików scanner.py, Mparser.py. Nowe pliki, które zostaną stworzone, to [AST.py](AST.py), [TreePrinter.py](TreePrinter.py) oraz [main.py](main.py).
 - W trakcie parsingu należy stworzyć drzewo syntaktyczne. Różnica między (konkretnym) drzewem parsingu (ang. _parse tree_) a (abstrakcyjnym) drzewem syntaktycznym (ang. _syntax tree_) opisana jest [tutaj](https://eli.thegreenplace.net/2009/02/16/abstract-vs-concrete-syntax-trees).
 - W zależności od rodzaju nieterminala należy zdefiniować specyficzne dla nich klasy lub struktury danych (stała, zmienna, przypisanie, wyrażenie arytmetyczne, wyrażenie porównania, instrukcja warunkowa, lista instrukcji, itp.).
 - Dla każdej klasy należy zdefiniować funkcję printTree wypisującą odpowiadającą danemu węzłowi część drzewa syntaktycznego.
