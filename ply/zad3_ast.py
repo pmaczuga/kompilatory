@@ -1,6 +1,9 @@
 class Node(object):
     pass
 
+class Instructions(Node):
+    def __init__(self, instructions = []):
+        self.instructions = instructions
 
 class IntNum(Node):
     def __init__(self, value):
@@ -11,10 +14,13 @@ class FloatNum(Node):
         self.value = value
 
 class Variable(Node):
-    def __init__(self, name, index_1 = None, index_2 = None):
+    def __init__(self, name):
         self.name = name
-        self.index_1 = index_1
-        self.index_2 = index_2
+
+class Reference(Node):
+    def __init__(self, variable, indexes):
+        self.variable = variable
+        self.indexes = indexes
 
 class BinExpr(Node):
     def __init__(self, op, left, right):
@@ -28,9 +34,9 @@ class UnaryExpr(Node):
         self.arg = arg
 
 class For(Node):
-    def __init__(self, variable, my_range, instruction):
+    def __init__(self, variable, range_, instruction):
         self.variable = variable
-        self.my_range = my_range
+        self.range_ = range_
         self.instruction = instruction
 
 class While(Node):
@@ -39,12 +45,12 @@ class While(Node):
         self.instruction = instruction
 
 class If(Node):
-    def __init__(self, condition, instruction, else_instruction = None):
+    def __init__(self, condition, instruction, else_instruction=None):
         self.condition = condition
         self.instruction = instruction
         self.else_instruction = else_instruction
 
-class My_range(Node):
+class Range(Node):
     def __init__(self, start, end):
         self.start = start
         self.end = end
@@ -54,8 +60,8 @@ class Return(Node):
         self.value = value
 
 class Print(Node):
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, expressions):
+        self.expressions = expressions
 
 class Continue(Node):
     def __init__(self):
@@ -69,17 +75,24 @@ class Vector(Node):
     def __init__(self, coordinates):
         self.coordinates = coordinates
 
-class Matrix(Node):
-    def __init__(self, vectors):
-        self.vectors = vectors
+class MatrixKeyword(Node):
+    def __init__(self, dim_1, dim_2=None):
+        self.dim_1 = dim_1
+        self.dim_2 = dim_2
+
+class Eye(MatrixKeyword):
+    pass
+
+class Zeros(MatrixKeyword):
+    pass
+
+class Ones(MatrixKeyword):
+    pass
 
 class String(Node):
     def __init__(self, value):
         self.value = value
 
-# ...
-# fill out missing classes
-# ...
 
 class Error(Node):
     def __init__(self):

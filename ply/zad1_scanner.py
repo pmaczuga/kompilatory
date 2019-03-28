@@ -40,7 +40,7 @@ reserved = {
     'print' : 'PRINT'
 }
 
-tokens = [ 'COMMENT', 'INTNUM', 'FLOATNUM', 'STRING',
+tokens = [ 'INTNUM', 'FLOATNUM', 'STRING',
 'ID', 'EQ', 'GT', 'LT', 'GE', 'LE', 'NE',
 'ASSIGN', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN',
 'ADD', 'SUB', 'MUL', 'DIV', 'DOTADD', 'DOTSUB', 'DOTMUL', 'DOTDIV',
@@ -84,6 +84,12 @@ def t_error(t) :
 def find_column(input, token):
     line_start = input.rfind('\n', 0, token.lexpos) + 1
     return (token.lexpos - line_start) + 1
+
+def find_tok_column(token):
+    last_cr = lexer.lexdata.rfind('\n', 0, token.lexpos)
+    if last_cr < 0:
+        last_cr = 0
+    return token.lexpos - last_cr
 
 t_ignore = '  \t'
 
