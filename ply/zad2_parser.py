@@ -148,6 +148,10 @@ def p_expression_string(p):
     '''expression : STRING'''
     p[0] = ('STRING', p[1])
 
+def p_expression_paren(p):
+	'''expression : '(' expression ')' '''
+	p[0] = p[2]
+
 def p_expression_matrix(p):
     '''expression : matrix'''
     p[0] = p[1]
@@ -160,7 +164,7 @@ def p_matrix_ones(p):
     '''matrix : ONES '(' expression ')'
               | ONES '(' expression ',' expression ')' '''
     if len(p) == 5:
-        p[0] = ('ONES', p[3], p[3])
+        p[0] = ('ONES', p[3])
     elif len(p) == 7:
         p[0] = ('ONES', p[3], p[5])
 
@@ -168,7 +172,7 @@ def p_matrix_zeros(p):
     '''matrix : ZEROS '(' expression ')'
               | ZEROS '(' expression ',' expression ')' '''
     if len(p) == 5:
-        p[0] = ('ZEROS', p[3], p[3])
+        p[0] = ('ZEROS', p[3])
     elif len(p) == 7:
         p[0] = ('ZEROS', p[3], p[5])
 
@@ -176,7 +180,7 @@ def p_matrix_eye(p):
     '''matrix : EYE '(' expression ')'
               | EYE '(' expression ',' expression ')' '''
     if len(p) == 5:
-        p[0] = ('EYE', p[3], p[3])
+        p[0] = ('EYE', p[3])
     elif len(p) == 7:
         p[0] = ('EYE', p[3], p[5])
 

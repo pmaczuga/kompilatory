@@ -1,6 +1,7 @@
 import sys
 import zad1_scanner
 import zad2_parser
+from zad3_TreePrinter import TreePrinter
 
 if __name__ == '__main__':
 
@@ -13,4 +14,5 @@ if __name__ == '__main__':
 
     parser = zad2_parser.parser
     text = file.read()
-    parser.parse(text, lexer=zad1_scanner.lexer)
+    ast = parser.parse(text, lexer=zad1_scanner.lexer)
+    ast.printTree()
