@@ -26,7 +26,7 @@ def p_error(p):
 
 def p_program(p):
     '''program : instructions_opt'''
-    p[0] = p[1]
+    p[0] = Program(p[1])
 
 def p_instructions_opt_some(p):
     '''instructions_opt : instructions'''

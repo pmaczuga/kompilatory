@@ -18,6 +18,10 @@ class TreePrinter:
     def printTree(self, indent=0):
         raise Exception("printTree not defined in class " + self.__class__.__name__)
 
+    @addToClass(zad3_ast.Program)
+    def printTree(self, indent=0):
+        self.instructions.printTree(indent)
+
     @addToClass(zad3_ast.Instructions)
     def printTree(self, indent=0):
         for instruction in self.instructions:

@@ -17,5 +17,5 @@ if __name__ == '__main__':
     ast = parser.parse(text, lexer=zad1_scanner.lexer)
     ast.printTree()
 
-    typeChecker = TypeChecker()   
-    typeChecker.visit(ast)
+    # typeChecker = TypeChecker()   
+    # typeChecker.visit(ast)

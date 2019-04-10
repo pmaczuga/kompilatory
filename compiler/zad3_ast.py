@@ -1,6 +1,10 @@
 class Node(object):
     pass
 
+class Program(Node):
+    def __init__(self, instructions):
+        self.instructions = instructions
+
 class Instructions(Node):
     def __init__(self, instructions = []):
         self.instructions = instructions
