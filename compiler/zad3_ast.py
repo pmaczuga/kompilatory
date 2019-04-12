@@ -1,5 +1,7 @@
 class Node(object):
-    pass
+    def __init__():
+        self.line = 0
+        self.column = 0
 
 class Program(Node):
     def __init__(self, instructions):
@@ -9,13 +11,15 @@ class Instructions(Node):
     def __init__(self, instructions = []):
         self.instructions = instructions
 
-class IntNum(Node):
+class Number(Node):
     def __init__(self, value):
         self.value = value
 
-class FloatNum(Node):
-    def __init__(self, value):
-        self.value = value
+class IntNum(Number):
+    pass
+
+class FloatNum(Number):
+    pass
 
 class Variable(Node):
     def __init__(self, name):
@@ -91,18 +95,18 @@ class Vector(Node):
     def __init__(self, coordinates):
         self.coordinates = coordinates
 
-class MatrixKeyword(Node):
+class MatrixInit(Node):
     def __init__(self, dim_1, dim_2=None):
         self.dim_1 = dim_1
         self.dim_2 = dim_2
 
-class Eye(MatrixKeyword):
+class Eye(MatrixInit):
     pass
 
-class Zeros(MatrixKeyword):
+class Zeros(MatrixInit):
     pass
 
-class Ones(MatrixKeyword):
+class Ones(MatrixInit):
     pass
 
 class String(Node):

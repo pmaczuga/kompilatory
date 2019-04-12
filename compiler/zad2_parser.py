@@ -27,6 +27,7 @@ def p_error(p):
 def p_program(p):
     '''program : instructions_opt'''
     p[0] = Program(p[1])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_instructions_opt_some(p):
     '''instructions_opt : instructions'''
@@ -35,14 +36,17 @@ def p_instructions_opt_some(p):
 def p_instructions_opt_none(p):
     '''instructions_opt : '''
     p[0] = Instructions()
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_instructions_multiple(p):
     '''instructions : instructions instruction'''
     p[0] = Instructions(p[1].instructions + [p[2]])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_instructions_single(p):
     '''instructions : instruction'''
     p[0] = Instructions([p[1]])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_instruction_statement(p):
     '''instruction : statement ';' '''
@@ -55,14 +59,17 @@ def p_instruction_if(p):
         p[0] = If(p[3], p[5], p[7])
     elif len(p) == 6:
         p[0] = If(p[3], p[5])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_instruction_for(p):
     '''instruction : FOR variable ASSIGN expression ':' expression instruction'''
     p[0] = For(p[2], Range(p[4], p[6]), p[7])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_instruction_while(p):
     '''instruction : WHILE '(' condition ')' instruction'''
     p[0] = While(p[3], p[5])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_instruction_comlex(p):
     '''instruction : '{' instructions '}' '''
@@ -71,10 +78,12 @@ def p_instruction_comlex(p):
 def p_statement_print_one(p):
     '''statement : PRINT expression'''
     p[0] = Print([p[2]])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_statement_print_more(p):
     '''statement : PRINT multiple_expressions'''
     p[0] = Print(p[2])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_statement_return(p):
     '''statement : RETURN expression
@@ -83,14 +92,17 @@ def p_statement_return(p):
         p[0] = Return(p[2])
     elif len(p) == 2:
         p[0] = Return()
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_statement_continue(p):
     '''statement : CONTINUE'''
     p[0] = Continue()
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_statement_break(p):
     '''statement : BREAK'''
     p[0] = Break()
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_statement_assign(p):
     '''statement : assignable ASSIGN expression
@@ -99,6 +111,7 @@ def p_statement_assign(p):
                  | assignable MULASSIGN expression
                  | assignable DIVASSIGN expression'''
     p[0] = Assignment(p[2], p[1], p[3])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_condtion(p):
     '''condition : expression EQ expression
@@ -108,6 +121,7 @@ def p_condtion(p):
                  | expression LE expression
                  | expression NE expression'''
     p[0] = Condition(p[2], p[1], p[3])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_binary_simple(p):
     '''expression : expression ADD expression
@@ -115,6 +129,7 @@ def p_expression_binary_simple(p):
                   | expression MUL expression
                   | expression DIV expression'''
     p[0] = BinExpr(p[2], p[1], p[3])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_binary_dot(p):
     '''expression : expression DOTADD expression
@@ -122,22 +137,27 @@ def p_expression_binary_dot(p):
                   | expression DOTMUL expression
                   | expression DOTDIV expression'''
     p[0] = BinExpr(p[2], p[1], p[3])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_negation(p):
     '''expression : SUB expression %prec NEGATION'''
     p[0] = UnaryExpr('NEGATE', p[1])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_transposition(p):
     '''expression : expression TRANSPOSE '''
     p[0] = UnaryExpr('TRANSPOSE', p[1])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_int_numver(p):
     '''expression : INTNUM'''
     p[0] = IntNum(p[1])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_float_numver(p):
     '''expression : FLOATNUM'''
     p[0] = FloatNum(p[1])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_assignable(p):
     '''expression : assignable'''
@@ -151,19 +171,22 @@ def p_assiganble(p):
 def p_reference_one(p):
     '''reference : variable '[' expression ']' '''
     p[0] = Reference(p[1], [p[3]])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_reference_more(p):
     '''reference : variable '[' multiple_expressions ']' '''
     p[0] = Reference(p[1], p[3])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_variable(p):
     '''variable : ID'''
-    if len(p) == 2:
-        p[0] = Variable(p[1])
+    p[0] = Variable(p[1])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_string(p):
     '''expression : STRING'''
     p[0] = String(p[1])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_paren(p):
     '''expression : '(' expression ')' '''
@@ -184,6 +207,7 @@ def p_matrix_ones(p):
         p[0] = Ones(p[3])
     elif len(p) == 7:
         p[0] = Ones(p[3], p[5])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_matrix_zeros(p):
     '''matrix : ZEROS '(' expression ')'
@@ -192,6 +216,7 @@ def p_matrix_zeros(p):
         p[0] = Zeros(p[3])
     elif len(p) == 7:
         p[0] = Zeros(p[3], p[5])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_matrix_eye(p):
     '''matrix : EYE '(' expression ')'
@@ -200,14 +225,17 @@ def p_matrix_eye(p):
         p[0] = Eye(p[3])
     elif len(p) == 7:
         p[0] = Eye(p[3], p[5])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_vector_one(p):
     '''vector : '[' expression ']' '''
     p[0] = Vector([p[2]])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_vector_more(p):
     '''vector : '[' multiple_expressions ']' '''
     p[0] = Vector(p[2])
+    p[0].line = zad1_scanner.lexer.lineno
 
 def p_multiple_expressions_two(p):
     '''multiple_expressions : expression ',' expression'''
