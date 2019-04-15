@@ -31,7 +31,6 @@ class NodeVisitor(object):
     #        self.visit(child)
 
 
-
 class TypeChecker(NodeVisitor):
     def __init__(self):
         self.types = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 'unknown')))
@@ -185,8 +184,15 @@ class TypeChecker(NodeVisitor):
 
     def visit_Reference(self, node, table):
         symbol = table.get(node.variable.name)
+        types = [self.visit(i, table) for i in node.indexes]
+
+        for t in types:
+            if t != 'unknown' and t != 'int':
+                print('Line {}: index is not integer'.format(node.line))
+                return 'unknown'
+
         if not symbol:
-            print('Line {}: {} is used but not declared'.format(node.line, node.name))
+            print('Line {}: {} is used but not declared'.format(node.line, node.variable.name))
             return 'unknown'
         if symbol.type == 'unknown':
             return 'unknown'
@@ -196,11 +202,11 @@ class TypeChecker(NodeVisitor):
 
         if len(node.indexes) > 2:
             print('Line {}: {} reference to two many indexes in {}'.format(node.line, node.variable.name, symbol.type))
-        if symbol.type == 'vector' and len(node.indexes != 1):
+        if symbol.type == 'vector' and len(node.indexes) != 1:
             print('Line {}: {} reference to two many indexes in {}'.format(node.line, node.variable.name, symbol.type))
 
         # TODO - try to check type somehow
-        return 'unknown'
+        return 'float'
 
 
 
@@ -214,13 +220,48 @@ class TypeChecker(NodeVisitor):
         if return_type == 'unknown':
             print('Line {}: Operation {} unsupported between types: {} and {}'.format(node.line, op, left_type, right_type))
             return 'unknown'
+
+        # check if opreration can be performed no matrixes (vectors) with this dimensions
+        right_dims = None
+        left_dims = None
+        right = node.right
+        left = node.left
+        if isinstance(right, Variable):
+            right = table.get(right.name).value
+        if isinstance(left, Variable):
+            left = table.get(left.name).value
+        if isinstance(right, Vector):
+            right_dims = right.int_dims()
+        elif isinstance(right, MatrixInit) and right.int_dims():
+            right_dims = right.int_dims()
+        if isinstance(left, Vector) or isinstance(left, MatrixInit):
+            left_dims = left.int_dims()
+        elif isinstance(left, MatrixInit) and left.int_dims():
+            left_dims = left.int_dims()
+        if op in ('.+', '.-', '.*', './'):
+            if (left_type == 'matrix' and right_type == 'matrix') or (left_type == 'vector' and right_type == 'vector'):
+                if right_dims and left_dims:
+                    if right_dims != left_dims:
+                        print('Line {}: Elementwise operation between arrays of wrong dimensions: {} and {}'.format(node.line, left_dims, right_dims))
+                        return 'unknown'
+            else:
+                print('Line {}: Elementwise operation between wrong types: {}, {}'.format(node.line, left_type, right_type))
+                return 'unknown'
+        if op == '*':
+            if (left_type == 'matrix' and (right_type == 'matrix' or right_type == 'vector')):
+                if right_dims and left_dims:
+                    if left_dims[1] != right_dims[0]:
+                        print('Line {}: Multiplication between matirxes of wrong dimensions: {} and {}'.format(node.line, left_dims, right_dims))
+                        return 'unknown'
+
         return return_type
 
     def visit_Assignment(self, node ,table):
         right_type = self.visit(node.right, table)
         if isinstance(node.left, Reference):
+            self.visit(node.left, table)
             if right_type != 'int' and right_type != 'float' and right_type != 'unkown':
-                print('Line {}: Assignment to reference {} of wrong type: {}'.format(node.line, node.variable.name, right_type))
+                print('Line {}: Assignment to reference {} of wrong type: {}'.format(node.line, node.left.variable.name, right_type))
         elif isinstance(node.left, Variable):
             table.put(node.left.name ,VariableSymbol(node.left.name, right_type, node.right))
 
@@ -293,17 +334,17 @@ class TypeChecker(NodeVisitor):
             return 'vector'
         if not len(set(coor_types)) == 1:
             print('Line {}: Vector initialization with different types'.format(node.line)) 
-            return 'vector'
+            return 'unknown'
         coor_type = coor_types[0]
         if coor_type == 'int' or coor_type == 'float':
             return 'vector'
         if coor_type == 'vector':
             if not len(set([len(l.coordinates) for l in node.coordinates])) == 1:
                 print('Line {}: Matrix initialization with vectors of different sizes'.format(node.line)) 
-                return 'vector'
+                return 'unknown'
             return 'matrix'
         print('Line {}: Vector initialization with illegal type: {}'.format(node.line, coor_type)) 
-        return 'vector'
+        return 'unknown'
 
     def visit_MatrixInit(self, node, table):
         dim1_type = self.visit(node.dim_1, table)

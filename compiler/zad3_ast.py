@@ -95,10 +95,27 @@ class Vector(Node):
     def __init__(self, coordinates):
         self.coordinates = coordinates
 
+    def int_dims(self):
+        result = (len(self.coordinates), )
+        if isinstance(self.coordinates[0], Vector):
+            result += self.coordinates[0].int_dims()
+        return result
+
+
 class MatrixInit(Node):
     def __init__(self, dim_1, dim_2=None):
         self.dim_1 = dim_1
         self.dim_2 = dim_2
+    def int_dims(self):
+        if isinstance(self.dim_1, IntNum) and (not self.dim_2 or isinstance(self.dim_2, IntNum)):
+            dim1 = self.dim_1.value
+            if self.dim_2:
+                dim2 = self.dim_2.value
+            else:
+                dim2 = self.dim_1.value
+            return (dim1, dim2)
+        else: 
+            return None
 
 class Eye(MatrixInit):
     pass
