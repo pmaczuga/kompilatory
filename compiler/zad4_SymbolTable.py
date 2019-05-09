@@ -2,7 +2,7 @@ class Symbol(object):
     pass
 
 class VariableSymbol(Symbol):
-    def __init__(self, name, type, value):
+    def __init__(self, name, type, value=None):
         self.name = name
         self.type = type
         self.value = value

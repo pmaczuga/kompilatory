@@ -105,12 +105,16 @@ def p_statement_break(p):
     p[0].line = zad1_scanner.lexer.lineno
 
 def p_statement_assign(p):
-    '''statement : assignable ASSIGN expression
-                 | assignable ADDASSIGN expression
+    '''statement : assignable ASSIGN expression'''
+    p[0] = Assignment(p[2], p[1], p[3])
+    p[0].line = zad1_scanner.lexer.lineno
+
+def p_statement_assign_and_expr(p):
+    '''statement : assignable ADDASSIGN expression
                  | assignable SUBASSIGN expression
                  | assignable MULASSIGN expression
                  | assignable DIVASSIGN expression'''
-    p[0] = Assignment(p[2], p[1], p[3])
+    p[0] = AssignmentAndExpr(p[2], p[1], p[3])
     p[0].line = zad1_scanner.lexer.lineno
 
 def p_condtion(p):

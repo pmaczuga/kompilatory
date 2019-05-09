@@ -58,6 +58,12 @@ class TreePrinter:
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
 
+    @addToClass(zad3_ast.AssignmentAndExpr)
+    def printTree(self, indent=0):
+        TreePrinter.printIndented(self.op, indent)
+        self.left.printTree(indent + 1)
+        self.right.printTree(indent + 1)
+
     @addToClass(zad3_ast.Condition)
     def printTree(self, indent=0):
         TreePrinter.printIndented(self.op, indent)

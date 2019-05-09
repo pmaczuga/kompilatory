@@ -1,5 +1,5 @@
 class Node(object):
-    def __init__():
+    def __init__(self):
         self.line = 0
         self.column = 0
 
@@ -42,6 +42,12 @@ class Assignment(Node):
         self.left = left
         self.right = right
 
+class AssignmentAndExpr(Node):
+    def __init__(self, op, left, right):
+        self.op = op
+        self.left = left
+        self.right = right
+
 class Condition(Node):
     def __init__(self, op, left, right):
         self.op = op
@@ -76,7 +82,7 @@ class Range(Node):
         self.end = end
 
 class Return(Node):
-    def __init__(self, value):
+    def __init__(self, value=None):
         self.value = value
 
 class Print(Node):

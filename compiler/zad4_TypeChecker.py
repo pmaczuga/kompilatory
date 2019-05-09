@@ -3,6 +3,7 @@ from zad3_ast import *
 from collections import defaultdict
 import functools
 import operator
+import copy
 
 class NodeVisitor(object):
 
@@ -10,7 +11,6 @@ class NodeVisitor(object):
         method = 'visit_' + node.__class__.__name__
         visitor = getattr(self, method, self.generic_visit)
         return visitor(node, table)
-
 
     def generic_visit(self, node, table):        # Called if no explicit visitor function exists for a node.
         if isinstance(node, list):
@@ -24,12 +24,6 @@ class NodeVisitor(object):
                             self.visit(item)
                 elif isinstance(child, AST.Node):
                     self.visit(child)
-
-    # simpler version of generic_visit, not so general
-    #def generic_visit(self, node):
-    #    for child in node.children:
-    #        self.visit(child)
-
 
 class TypeChecker(NodeVisitor):
     def __init__(self):
@@ -208,7 +202,19 @@ class TypeChecker(NodeVisitor):
         # TODO - try to check type somehow
         return 'float'
 
-
+    def get_matrix_vector_dims(self, matrix, table):
+        dims = None
+        matrix = copy.deepcopy(matrix)
+        if isinstance(matrix, Variable):
+            matrix = table.get(matrix.name)
+            if not matrix:
+                return None
+            matrix = matrix.value
+        if isinstance(matrix, Vector):
+            dims = matrix.int_dims()
+        elif isinstance(matrix, MatrixInit) and matrix.int_dims():
+            dims = matrix.int_dims()
+        return dims
 
     def visit_BinExpr(self, node, table):
         left_type = self.visit(node.left, table)
@@ -221,23 +227,11 @@ class TypeChecker(NodeVisitor):
             print('Line {}: Operation {} unsupported between types: {} and {}'.format(node.line, op, left_type, right_type))
             return 'unknown'
 
-        # check if opreration can be performed no matrixes (vectors) with this dimensions
-        right_dims = None
-        left_dims = None
+        # check if opreration can be performed on matrixes (vectors) with this dimensions
         right = node.right
         left = node.left
-        if isinstance(right, Variable):
-            right = table.get(right.name).value
-        if isinstance(left, Variable):
-            left = table.get(left.name).value
-        if isinstance(right, Vector):
-            right_dims = right.int_dims()
-        elif isinstance(right, MatrixInit) and right.int_dims():
-            right_dims = right.int_dims()
-        if isinstance(left, Vector) or isinstance(left, MatrixInit):
-            left_dims = left.int_dims()
-        elif isinstance(left, MatrixInit) and left.int_dims():
-            left_dims = left.int_dims()
+        right_dims = self.get_matrix_vector_dims(right, table)
+        left_dims = self.get_matrix_vector_dims(left, table)
         if op in ('.+', '.-', '.*', './'):
             if (left_type == 'matrix' and right_type == 'matrix') or (left_type == 'vector' and right_type == 'vector'):
                 if right_dims and left_dims:
@@ -251,7 +245,7 @@ class TypeChecker(NodeVisitor):
             if (left_type == 'matrix' and (right_type == 'matrix' or right_type == 'vector')):
                 if right_dims and left_dims:
                     if left_dims[1] != right_dims[0]:
-                        print('Line {}: Multiplication between matirxes of wrong dimensions: {} and {}'.format(node.line, left_dims, right_dims))
+                        print('Line {}: Multiplication between matrixes of wrong dimensions: {} and {}'.format(node.line, left_dims, right_dims))
                         return 'unknown'
 
         return return_type
@@ -264,6 +258,22 @@ class TypeChecker(NodeVisitor):
                 print('Line {}: Assignment to reference {} of wrong type: {}'.format(node.line, node.left.variable.name, right_type))
         elif isinstance(node.left, Variable):
             table.put(node.left.name ,VariableSymbol(node.left.name, right_type, node.right))
+
+    def visit_AssignmentAndExpr(self, node, table):
+        left_type = self.visit(node.left, table)
+        right_type = self.visit(node.right, table)
+        ttype = self.types[node.op][node.left][node.right]
+        if ttype == 'unkown':
+            print('Line {}: Operation {} unsupported between types: {} and {}'.format(node.line, op, left_type, right_type))
+            return
+        left_dims = self.get_matrix_vector_dims(node.left, table)
+        right_dims = self.get_matrix_vector_dims(node.right, table)
+        if node.op == '*=':
+            if (left_type == 'matrix' and (right_type == 'matrix' or right_type == 'vector')):
+                if right_dims and left_dims:
+                    if left_dims[1] != right_dims[0]:
+                        print('Line {}: Multiplication between matrixes of wrong dimensions: {} and {}'.format(node.line, left_dims, right_dims))
+                        return
 
     def visit_Condition(self, node ,table):
         left_type = self.visit(node.left, table)
@@ -331,7 +341,7 @@ class TypeChecker(NodeVisitor):
     def visit_Vector(self, node, table):
         coor_types = [self.visit(t, table) for t in node.coordinates]
         if self.types.__contains__('unknown'):
-            return 'vector'
+            return 'unknown'
         if not len(set(coor_types)) == 1:
             print('Line {}: Vector initialization with different types'.format(node.line)) 
             return 'unknown'
