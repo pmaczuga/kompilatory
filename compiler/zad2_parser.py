@@ -22,6 +22,7 @@ def p_error(p):
         print("Syntax error at line {0}, column {1}: LexToken({2}, '{3}')".format(p.lineno, zad1_scanner.find_tok_column(p), p.type, p.value))
     else:
         print("Unexpected end of input")
+    raise ValueError("Error")
 
 def p_program(p):
     '''program : instructions_opt'''
@@ -144,7 +145,7 @@ def p_expression_binary_dot(p):
 
 def p_expression_negation(p):
     '''expression : SUB expression %prec NEGATION'''
-    p[0] = UnaryExpr('NEGATE', p[1])
+    p[0] = UnaryExpr('NEGATE', p[2])
     p[0].line = zad1_scanner.lexer.lineno
 
 def p_expression_transposition(p):

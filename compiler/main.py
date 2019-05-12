@@ -16,13 +16,16 @@ if __name__ == '__main__':
 
     parser = zad2_parser.parser
     text = file.read()
-    ast = parser.parse(text, lexer=zad1_scanner.lexer)
-    if ast:
-        ast.printTree()
+    try:
+        ast = parser.parse(text, lexer=zad1_scanner.lexer)
+    except ValueError:
+        sys.exit(0)
 
-        typeChecker = TypeChecker()   
-        typeChecker.visit(ast)
+    ast.printTree()
 
-        if not typeChecker.error:
-            print("\n\nOUTPUT:\n")
-            ast.accept(Interpreter())
+    typeChecker = TypeChecker()   
+    typeChecker.visit(ast)
+
+    if not typeChecker.error:
+        print("\n\nOUTPUT:\n")
+        ast.accept(Interpreter())
