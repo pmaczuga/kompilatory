@@ -23,7 +23,6 @@ def p_error(p):
     else:
         print("Unexpected end of input")
 
-
 def p_program(p):
     '''program : instructions_opt'''
     p[0] = Program(p[1])
@@ -106,7 +105,7 @@ def p_statement_break(p):
 
 def p_statement_assign(p):
     '''statement : assignable ASSIGN expression'''
-    p[0] = Assignment(p[2], p[1], p[3])
+    p[0] = Assignment(p[1], p[3])
     p[0].line = zad1_scanner.lexer.lineno
 
 def p_statement_assign_and_expr(p):
@@ -250,5 +249,4 @@ def p_multiple_expressions_more(p):
     p[0] = p[1] + [p[3]]
 
 
-    
 parser = yacc.yacc()

@@ -54,7 +54,7 @@ class TreePrinter:
 
     @addToClass(zad3_ast.Assignment)
     def printTree(self, indent=0):
-        TreePrinter.printIndented(self.op, indent)
+        TreePrinter.printIndented("=", indent)
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
 

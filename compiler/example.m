@@ -1,1 +1,5 @@
-w += 2;
+print 1;
+
+return;
+
+print 2;

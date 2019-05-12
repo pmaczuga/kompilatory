@@ -3,6 +3,9 @@ class Node(object):
         self.line = 0
         self.column = 0
 
+    def accept(self, visitor):
+        return visitor.visit(self)
+
 class Program(Node):
     def __init__(self, instructions):
         self.instructions = instructions
@@ -37,8 +40,7 @@ class BinExpr(Node):
         self.right = right
 
 class Assignment(Node):
-    def __init__(self, op, left, right):
-        self.op = op
+    def __init__(self, left, right):
         self.left = left
         self.right = right
 

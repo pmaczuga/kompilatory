@@ -20,7 +20,7 @@ def when(param_type):
   # dispatcher is an function object
   def f(fn):
     frame = inspect.currentframe().f_back
-    dispatcher = frame.f_locals[fn.func_name]
+    dispatcher = frame.f_locals[fn.__name__]
     if not isinstance(dispatcher, Dispatcher):
       dispatcher = dispatcher.dispatcher
     dispatcher.add_target(param_type, fn)
