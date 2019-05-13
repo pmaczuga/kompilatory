@@ -15,3 +15,10 @@ print ones(4) .* 4;
 c = [2,2,2];
 
 print a * c;
+
+for i = 1 : 10
+{
+     print i;
+     if (i == 5)
+          break;
+}
