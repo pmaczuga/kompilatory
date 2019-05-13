@@ -147,7 +147,7 @@ class TypeChecker(NodeVisitor):
         self.types['>']['float']['float'] = 'boolean'
         self.types['>']['int']['float'] = 'boolean'
         self.types['>']['float']['int'] = 'boolean'
-        self.types['>']['string']['string'] = 'boolean''
+        self.types['>']['string']['string'] = 'boolean'
 
         self.types['<']['int']['int'] = 'boolean'
         self.types['<']['float']['float'] = 'boolean'
