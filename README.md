@@ -1,5 +1,9 @@
 # Kompilatory
 
+## Przyład użycia
+
+```python main.py example.m```
+
 ## Homepage:  
 http://home.agh.edu.pl/~mkuta/tklab/
 
@@ -13,3 +17,4 @@ http://home.agh.edu.pl/~mkuta/tklab/
 ### Dokumentacja:  
 [PLY](resources/ply/README.md)  
 [Wyrażenia regularne](resources/re/README.md)  
+
